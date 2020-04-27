@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+      
+	<f:view>
+	<h:head>
+		<title>Cadastro Pessoas</title>
+		<style>
+		 @import url("estilo.css");
+		</style>
+	</h:head>
+	<h:body>
+		
+		<h:graphicImage name="especializa.jpg" library="imagens" />
+		<h1>Cadastro de Pessoas</h1>
+		
+		<h:messages infoClass="info" errorClass="erro" warnClass="warn" fatalClass="fatal"/>
+		
+		<h:form>
+			<h:panelGrid columns="3">
+				#{mens.escolha}
+				<h:selectOneMenu value="#{geralBean.locale}" valueChangeListener="#{geralBean.atualizarLocale}">
+					<f:selectItems value="#{geralBean.localesDisponiveis}"></f:selectItems>
+					<f:converter converterId="conversorLocale"/>
+				</h:selectOneMenu>
+				<h:commandButton value="OK" />
+			</h:panelGrid>
+		</h:form>
+		
+		<h:outputFormat value="#{mens.editar}" rendered="#{not empty cadastroPessoasBean.pessoaSelecionada.nome}">
+			<f:param value="#{cadastroPessoasBean.pessoaSelecionada.nome}"/>
+		</h:outputFormat>
+		
+		
+		
+		<h:form rendered="#{empty cadastroPessoasBean.pessoaSelecionada}">
+			<h:panelGrid columns="2">
+				<f:facet name="header">Tipo de Pessoa</f:facet>
+				<h:selectOneRadio value="#{cadastroPessoasBean.tipoNovaPessoa}" >
+					<f:selectItem itemLabel="Pessoa Fisica"   itemValue="PF"/>		
+					<f:selectItem itemLabel="Pessoa Juridica" itemValue="PJ"/>		
+				</h:selectOneRadio>
+				
+				<h:commandButton action="#{cadastroPessoasBean.criar}" value="Criar nova" />
+			</h:panelGrid>
+		</h:form>
+	
+			
+		<h:form rendered="#{not empty cadastroPessoasBean.pessoaSelecionada}">
+			<h:panelGrid columns="3">
+				<f:facet name="header">Dados Gerais</f:facet>
+				<h:outputLabel for="nome" value="Nome"/>
+				<h:inputText id="nome" value="#{cadastroPessoasBean.pessoaSelecionada.nome}" />
+				<h:message for="nome"/>
+				
+				<h:outputLabel for="email" value="Email:"/> 
+				<h:inputText id="email" value="#{cadastroPessoasBean.pessoaSelecionada.email}" validatorMessage="Email Inválido">
+					<f:validateRegex pattern=".+@.+"/>
+				</h:inputText>
+				<h:message for="email" styleClass="erro"/>
+				
+				<h:outputLabel for="telefone" value="Telefone:"/>
+				<h:inputText id="telefone" value="#{cadastroPessoasBean.pessoaSelecionada.telefone}" />
+				<h:message for="telefone"/>
+			
+			</h:panelGrid>
+		
+			
+			<h:panelGrid columns="3" id="gridPessoaFisica" rendered="#{cadastroPessoasBean.pessoaFisicaSelecionada}">
+				<f:facet name="header">Dados Pessoa Fisica</f:facet>
+				
+				<h:outputLabel for="rg" value="rg"/>
+				<h:inputText id="rg" value="#{cadastroPessoasBean.pessoaSelecionada.rg}" />
+				<h:message for="rg"/>
+			
+				
+				<h:outputLabel for="cpf" value="cpf"/>
+				<h:inputText id="cpf" value="#{cadastroPessoasBean.pessoaSelecionada.cpf}" validatorMessage="CPF Inválido">
+					<f:validateRegex pattern="\d{3}(\.\d{3}){2}-\d{2}"/>
+					<f:validator validatorId="validadorDeCPF"/>
+				</h:inputText>
+				<h:message for="cpf" styleClass="erro"/>
+				
+				<h:outputLabel for="dataNascimento" value="dataNascimento"/>
+				<h:inputText id="dataNascimento" value="#{cadastroPessoasBean.pessoaSelecionada.dataNascimento}" converterMessage="Máscara da data dd/MM/yyyy">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:inputText>
+				<h:message for="dataNascimento" styleClass="erro"/>
+				
+				<h:outputLabel for="sexo" value="Sexo"/>
+				<h:selectOneRadio id="sexo" value="#{cadastroPessoasBean.pessoaSelecionada.sexo}">
+						<f:selectItems value="#{cadastroPessoasBean.sexos}" var="s" itemLabel="#{s.nome}"/>
+				</h:selectOneRadio>
+				<h:message for="sexo" styleClass="erro"/>
+				
+			</h:panelGrid>
+			
+			<h:commandButton action="#{cadastroPessoasBean.salvar}" value="Salvar" />
+			<h:commandButton action="#{cadastroPessoasBean.cancelar}" value="Cancelar" immediate="true"/>
+		</h:form>
+		
+		<h:panelGrid columns="3" id="gridPessoaJuridica" rendered="#{cadastroPessoasBean.pessoaJuridicaSelecionada}">
+  				<f:facet name="header">Dados de pessoa jurídica</f:facet>
+  				<h:outputLabel value="Cnpj" for="cnpj" />
+  				<h:inputText id="cnpj" value="#{cadastroPessoasBean.pessoaSelecionada.cnpj}" validatorMessage="CNPJ Inválido!">
+  					<f:validateRegex pattern="\d{2}(\.\d{3}){2}/\d{4}-\d{2}"/>
+  				</h:inputText>
+  				<h:message for="cnpj" styleClass="erro"/>
+
+  				<h:outputLabel value="Razão Social" for="razao" />
+  				<h:inputText id="razao" value="#{cadastroPessoasBean.pessoaSelecionada.razaoSocial}"/>
+  				<h:message for="rg" styleClass="erro"/>
+
+  				<h:outputLabel value="Inscrição Estadual" for="inscricaoEstadual" />
+  				<h:inputText id="inscricaoEstadual" value="#{cadastroPessoasBean.pessoaSelecionada.inscricaoEstadual}"/>
+  				<h:message for="inscricaoEstadual" styleClass="erro"/>
+
+  				<h:outputLabel value="Inscrição Municipal" for="inscricaoMunicipal" />
+  				<h:inputText id="inscricaoMunicipal" value="#{cadastroPessoasBean.pessoaSelecionada.inscricaoMunicipal}"/>
+  				<h:message for="inscricaoMunicipal" styleClass="erro"/>
+  			</h:panelGrid>
+		
+		<h:form>
+			
+			<h2>lista de pessoas cadastradas</h2>
+			
+		
+			<h:dataTable value="#{cadastroPessoasBean.lista}" var="p" rowClasses="linha1, linha2">
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					#{p.nome}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Email</f:facet>
+					#{p.email}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Telefone</f:facet>
+					#{p.telefone}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Ações</f:facet>
+					<h:commandLink value="Editar">
+						<f:setPropertyActionListener value="#{p}" target="#{cadastroPessoasBean.pessoaSelecionada}" />
+					</h:commandLink>  | 
+					<h:commandLink value="Excluir" action="#{cadastroPessoasBean.excluir}">
+						<f:setPropertyActionListener value="#{p}" target="#{cadastroPessoasBean.pessoaSelecionada}" />
+					</h:commandLink>
+				</h:column>
+			</h:dataTable>
+		</h:form>
+	</h:body>
+	</f:view>
+</html>

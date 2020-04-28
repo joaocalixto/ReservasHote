@@ -66,7 +66,7 @@ public class CadastroPessoasBean {
 	public String cancelar() {
 		pessoaSelecionada = null;
 		tipoNovaPessoa = null;
-		return "primeiro.jsf";
+		return "inicio";
 	}
 	
 	public void excluir() {

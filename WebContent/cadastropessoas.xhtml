@@ -4,19 +4,13 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html">
       
-	<f:view>
-	<h:head>
-		<title>Cadastro Pessoas</title>
-		<style>
-		 @import url("estilo.css");
-		</style>
-	</h:head>
-	<h:body>
-		
-		<h:graphicImage name="especializa.jpg" library="imagens" />
-		<h1>Cadastro de Pessoas</h1>
-		
-		<h:messages infoClass="info" errorClass="erro" warnClass="warn" fatalClass="fatal"/>
+ 	<ui:composition template="/estrutura.xhtml">
+ 		<ui:define name="direita">
+ 			<h:messages infoClass="info" errorClass="erro" warnClass="warn" fatalClass="fatal"/>
+ 		</ui:define>
+ 	
+     	<h1>Cadastro de Pessoas</h1>
+      	
 		
 		<h:form>
 			<h:panelGrid columns="3">
@@ -151,6 +145,10 @@
 				</h:column>
 			</h:dataTable>
 		</h:form>
-	</h:body>
-	</f:view>
+      </ui:composition>
+	
+		
+		
+		
+	
 </html>

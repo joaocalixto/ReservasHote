@@ -16,4 +16,15 @@
 		<var>mens</var>
 	</resource-bundle>
 </application>
+<lifecycle>
+	<phase-listener>listeners.OuvinteFases</phase-listener>
+</lifecycle>
+
+<navigation-rule>
+	<!-- <from-view-id>/pasta/*</from-view-id> -->
+	<navigation-case>
+		<from-outcome>inicio</from-outcome>
+		<to-view-id>/primeiro.jsf</to-view-id>
+	</navigation-case>
+</navigation-rule>
 </faces-config>

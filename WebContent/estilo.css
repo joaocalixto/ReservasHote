@@ -11,6 +11,10 @@ body {
 	background-attachment: fixed;
 }
 
+.bandeiras {
+	margin: 5px;
+}
+
 img {
 	margin: 10px;
 }
@@ -136,5 +140,10 @@ tr.linha2 > td {
 .fatal {
 	color: #F00;
 	font-weight: bold;
+}
+#primefaces {
+	
+	position: absolute;
+	width: 70%;
 }
 

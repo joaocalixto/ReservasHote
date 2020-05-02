@@ -2,9 +2,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:esp="https://especializa.com.br/cursosonline/taglib"
+      xmlns:espc="http://java.sun.com/jsf/composite/componentes">
       
  	<ui:composition template="/estrutura.xhtml">
+ 		<script type="text/javascript">
+
+ 			function funcaoErro(){
+ 	 			}
+	 		function funcaoEvento(data){
+		 		var mensagem = "";
+		 		for	(var i in data){
+		 			mensagem += i + ": " + data[i] + "\n"; 
+			 	}
+			 	alert(mensagem);
+		 	}
+
+ 		</script>
+ 	
+ 		<ui:param name="titulo" value="Cadastro de pessoas"/>
  		<ui:define name="direita">
  			<h:messages infoClass="info" errorClass="erro" warnClass="warn" fatalClass="fatal"/>
  		</ui:define>
@@ -46,14 +63,18 @@
 			<h:panelGrid columns="3">
 				<f:facet name="header">Dados Gerais</f:facet>
 				<h:outputLabel for="nome" value="Nome"/>
-				<h:inputText id="nome" value="#{cadastroPessoasBean.pessoaSelecionada.nome}" />
+				<h:inputText id="nome" valueChangeListener="#{cadastroPessoasBean.ouvinteAjax}" value="#{cadastroPessoasBean.pessoaSelecionada.nome}">		
+					<f:ajax event="change" listener="#{cadastroPessoasBean.ouvinteAjax}" immediate="true"/>
+				</h:inputText>
 				<h:message for="nome"/>
 				
 				<h:outputLabel for="email" value="Email:"/> 
 				<h:inputText id="email" value="#{cadastroPessoasBean.pessoaSelecionada.email}" validatorMessage="Email Inválido">
 					<f:validateRegex pattern=".+@.+"/>
+					<f:ajax render="mensEmail :formTabela:tabela" execute="@this"
+					onerror="funcaoErro" onevent="funcaoEvento"/>
 				</h:inputText>
-				<h:message for="email" styleClass="erro"/>
+				<h:message id="mensEmail" for="email" styleClass="erro"/>
 				
 				<h:outputLabel for="telefone" value="Telefone:"/>
 				<h:inputText id="telefone" value="#{cadastroPessoasBean.pessoaSelecionada.telefone}" />
@@ -116,32 +137,21 @@
   				<h:message for="inscricaoMunicipal" styleClass="erro"/>
   			</h:panelGrid>
 		
-		<h:form>
+		<h:form id="formTabela">
 			
 			<h2>lista de pessoas cadastradas</h2>
 			
 		
-			<h:dataTable value="#{cadastroPessoasBean.lista}" var="p" rowClasses="linha1, linha2">
-				<h:column>
-					<f:facet name="header">Nome</f:facet>
-					#{p.nome}
-				</h:column>
-				<h:column>
-					<f:facet name="header">Email</f:facet>
-					#{p.email}
-				</h:column>
-				<h:column>
-					<f:facet name="header">Telefone</f:facet>
-					#{p.telefone}
-				</h:column>
+			<h:dataTable id="tabela" value="#{cadastroPessoasBean.lista}" var="p" rowClasses="linha1, linha2">
+			
+				<esp:coluna nome="Nome" valor="#{p.nome}" escapar="true"/>
+				<esp:coluna nome="Email" valor="#{p.email}" escapar="true"/>
+				<esp:coluna nome="Telefone" valor="#{p.telefone}" escapar="true"/>
+				
 				<h:column>
 					<f:facet name="header">Ações</f:facet>
-					<h:commandLink value="Editar">
-						<f:setPropertyActionListener value="#{p}" target="#{cadastroPessoasBean.pessoaSelecionada}" />
-					</h:commandLink>  | 
-					<h:commandLink value="Excluir" action="#{cadastroPessoasBean.excluir}">
-						<f:setPropertyActionListener value="#{p}" target="#{cadastroPessoasBean.pessoaSelecionada}" />
-					</h:commandLink>
+					<espc:editarExcluir alvo="#{cadastroPessoasBean.pessoaSelecionada}" 
+						excluirListener="#{cadastroPessoasBean.excluir()}" objeto="#{p}"/>
 				</h:column>
 			</h:dataTable>
 		</h:form>

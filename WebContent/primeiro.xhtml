@@ -5,7 +5,7 @@
       xmlns:h="http://java.sun.com/jsf/html">
 
 	<ui:composition template="/estrutura.xhtml">
-		<ui:param name="titulo" value="">Minha primeira pagina JSF... agora com Facelets templates</ui:define>
+		<ui:param name="titulo" value="Minha primeira pagina JSF... agora com Facelets templates"/>
 		<h1>Meu primeiro exemplo JSF</h1>
 		
 		Exibir: <h:outputText value="#{meuPrimeiroBean.exibir}"/> <br/>
@@ -22,6 +22,7 @@
 			<h:outputLink value="https://especializa.com.br/cursosonline"> Cursos java</h:outputLink> <br/>
 			<h:link outcome="cadastropessoas.jsf" value="Chamando o cadastro de pessoas"/>
 		</h:form>
+		
 	</ui:composition>
 	
 </html>

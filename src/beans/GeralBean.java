@@ -8,6 +8,7 @@ import java.util.Locale;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.ValueChangeEvent;
 
@@ -41,10 +42,16 @@ public class GeralBean {
 		}
 	}
 	
-	public void atualizarLocale(ValueChangeEvent e) {
-		System.out.println("atualiza locale");
+	public void atualizarLocale(ActionEvent e) {
+		
+		Locale l = (Locale) e.getComponent().getAttributes().get("locale");
+		
+		if (l != null) {
+			locale = l;
+		}
+		
 		if(FacesContext.getCurrentInstance().getViewRoot() != null) {
-			FacesContext.getCurrentInstance().getViewRoot().setLocale((Locale) e.getNewValue());	
+			FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);	
 		}
 	}
 	
@@ -59,6 +66,11 @@ public class GeralBean {
 	}
 	public void setLocalesDisponiveis(List<Locale> localesDisponiveis) {
 		this.localesDisponiveis = localesDisponiveis;
+	}
+
+	@Override
+	public String toString() {
+		return "GeralBean [locale=" + locale + ", localesDisponiveis=" + localesDisponiveis + "]";
 	}
 	
 	

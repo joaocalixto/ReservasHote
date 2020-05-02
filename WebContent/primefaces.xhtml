@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<ui:composition template="/estrutura.xhtml">
+		<ui:param name="titulo" value="Exemplos PrimeFaces" />
+		
+		<h:form prependId="false">
+
+			<p:tabView id="primefaces">
+				<p:tab title="Primeiros exemplos">
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Nome:" for="nome" />
+					<p:keyboard/>
+					
+					<h:outputLabel value="Password: " for="password" />
+					<p:password id="password" promptLabel="Digite a senha" weakLabel="Senha fraca" 
+						strongLabel="Senha forte" goodLabel="Senha razoavel" minLength="6"></p:password>
+						
+					<h:outputLabel for="data" value="Data:"/>
+					<p:calendar id="data" locale="#{geralBean.locale}" pages="2" showOn="button" 
+						 popupIconOnly="true" showOtherMonths="true"/>
+				</h:panelGrid>
+				
+				<p:button value="Salvar"/>
+			</p:tab>
+			<p:tab title="Opinião">
+				<h:outputText value="Gostou do Primefaces?" />
+				<p:rating stars="5"/>
+			</p:tab>
+			<p:tab title="Troca de tema">
+				<p:themeSwitcher initialText="Mude o tema" buttonPreText="Tema:"/>
+			</p:tab>
+			</p:tabView>
+			<p:resizable for="primefaces"/>
+			<p:draggable for="primefaces" opacity="0.6"/>
+		</h:form>
+	</ui:composition>
+</html>
